@@ -1,6 +1,6 @@
 import threading
 import speech_recognition as sr
-import pymongo
+from pymongo import MongoClient
 import key
 from time import sleep
 
@@ -11,7 +11,7 @@ class Audio2Text(object):
         print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
         self.__r = sr.Recognizer()
         self.__text = ' '
-        __client = pymongo.MongoClient(key._mongo_uri)
+        __client = MongoClient(key._mongo_uri)
         __coll = __client[key._db_name]
         self.__db = __coll[key._db_document]
 
@@ -24,8 +24,8 @@ class Audio2Text(object):
             print("Text => ", _text)
             self.__text += _text
         except Exception as e:
-            print((e))
-            print("Something went Wrong. But Still Listening...")        
+            print(e)
+            print("Something went Wrong. But Still Listening...")
         return None
 
     def __add2db(self, _obj):
@@ -38,6 +38,7 @@ class Audio2Text(object):
             while True:
                 # Listen Microphone
                 with sr.Microphone() as source:
+                    # 2 * 60s = 120 // 2 mins
                     audio = self.__r.record(source, duration=120)
 
                 thread = threading.Thread(
@@ -48,10 +49,13 @@ class Audio2Text(object):
         except KeyboardInterrupt:
             pass
 
-        print("Saving to db...")
-        sleep(5)
-        _obj = {"text": self.__text}
-        self.__add2db(_obj)
+        if len(self.__text) >= 125:
+            print("Saving to db...")
+            sleep(5)
+            _obj = {"text": self.__text}
+            self.__add2db(_obj)
+        else:
+            print("Can't Save to db. Text length less than 125.")
         print("Cleaning threads...")
         sleep(5)
         for thread in threads:
