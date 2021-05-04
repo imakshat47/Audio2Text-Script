@@ -22,6 +22,7 @@ class Audio2Text(object):
             # lannguage tag n  show_all=True
             _text = self.__r.recognize_google(audio)
             print("Text => ", _text)
+            self.__text += " "
             self.__text += _text
         except Exception as e:
             print(e)
