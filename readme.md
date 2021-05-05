@@ -13,14 +13,15 @@
 3. Open CMD
 4. Make a key.py file in root dir
 
-- File format 
-`python
+- File format
+
+```python
    # Mongo DB URI
-   \_mongo_uri = "URI"
+   _mongo_uri = "URI"
    # DB Details
-   \_db_name = "tenet" #databaseName
-   \_db_document = "audioText" #documentName
-`
+   _db_name = "tenet" #databaseName
+   _db_document = "audioText" #documentName
+```
 
 5. Run `pip install requirements.txt`
 6. Run `py main.py`

@@ -1,7 +1,16 @@
+try:
+    import speech_recognition as sr
+except:
+    exit("speech_recognition Not Found.")
+try:
+    from pymongo import MongoClient
+except:
+    exit("pymongo Not Found.")
+try:
+    import key
+except:
+    exit("key Not Found.")
 import threading
-import speech_recognition as sr
-from pymongo import MongoClient
-import key
 from time import sleep
 
 
@@ -21,6 +30,7 @@ class Audio2Text(object):
             sleep(5)
             # lannguage tag n  show_all=True
             _text = self.__r.recognize_google(audio)
+            # _text = self.__r.recognize_google_cloud(audio)
             print("Text => ", _text)
             self.__text += " "
             self.__text += _text
