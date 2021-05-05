@@ -30,7 +30,8 @@ class Audio2Text(object):
             sleep(5)
             # lannguage tag n  show_all=True
             _text = self.__r.recognize_google(audio)
-            # _text = self.__r.recognize_google_cloud(audio)
+            # recognize_ibm(self, audio_data, username, password, language="en-US", show_all=False)
+            # _text = self.__r.recognize_ibm(audio, username, password)            
             print("Text => ", _text)
             self.__text += " "
             self.__text += _text
@@ -50,7 +51,7 @@ class Audio2Text(object):
                 # Listen Microphone
                 with sr.Microphone() as source:
                     # 2 * 60s = 120 // 2 mins
-                    audio = self.__r.record(source, duration=120)
+                    audio = self.__r.record(source, duration=60)
 
                 thread = threading.Thread(
                     None, target=self.__audio2text, args=(audio,))
