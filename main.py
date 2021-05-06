@@ -8,7 +8,7 @@ text = 'We have listened a lot Now: '
 if __name__ == '__main__':
     # listen via Microphone
     print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
-    print("Welcome to Tenet System")
+    print("                               Welcome to Tenet System")
     print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
     a2t = Audio2Text()
     a2t._listen()    

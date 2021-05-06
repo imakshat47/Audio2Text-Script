@@ -10,7 +10,7 @@ from src.Module import API, SentimentScore, Database
 
 class Audio2Text(object):
     def __init__(self):
-        print("Setting...")
+        print("                               Setting...")
         print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
         print("Available Devices => ", sr.Microphone.list_microphone_names())
         print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
@@ -66,8 +66,8 @@ class Audio2Text(object):
         except KeyboardInterrupt:
             pass
 
-        # Present Output
-         # Cleaning Threads
+        # // Present Output
+        # Cleaning Threads
         print(app.clean_thread_msg)
         sleep(app.app_sleep_time)
         for thread in threads:
@@ -96,7 +96,9 @@ class Audio2Text(object):
 
         sleep(app.app_sleep_time)
         to_push = input(app.db_push_msg)
-        if to_push != "No" or to_push != "no":
+        if to_push == "No" or to_push == "no":
+            print("No data pushed to Database!!")
+        else:
             _obj = {"text": self.__text, "_ats_text": ats_text,
                     "_polarity": _polarity, "_ats_polarity": _ats_polarity}
             print(_obj)
