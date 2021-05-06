@@ -12,7 +12,7 @@
 1. Clone my Repo
 2. Connect Microphone
 3. Open CMD
-4. Make a key.py file in root dir for connecting database
+4. Make a key.py file in root dir for connecting database (If want to push Record to Database)
 
 - File format
 
