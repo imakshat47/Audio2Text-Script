@@ -1,9 +1,16 @@
-import requests
-import json
-from bs4 import BeautifulSoup
-import app
-from textblob import TextBlob
-import key
+try:
+    import requests
+    import json
+    from bs4 import BeautifulSoup
+    import app
+    from textblob import TextBlob
+except:
+    exit("Some Modules Missing!!")
+try:
+    import key
+except:
+    exit("key Not Found.")
+
 try:
     from pymongo import MongoClient
 except:

@@ -2,11 +2,6 @@ try:
     import speech_recognition as sr
 except:
     exit("speech_recognition Not Found.")
-try:
-    import key
-except:
-    exit("key Not Found.")
-
 import threading
 import app
 from time import sleep
