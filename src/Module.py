@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 import app
 from textblob import TextBlob
 import key
+try:
+    from pymongo import MongoClient
+except:
+    exit("pymongo Not Found.")
 
 
 class API(object):
@@ -47,7 +51,7 @@ class Database(object):
             print(app.db_conn_err_msg)
 
     def _insert(self, _obj):
-        self.__db.insert_one(_obj)  
+        self.__db.insert_one(_obj)
         print(app.saved_to_db_msg)
 
     def __del__(self):

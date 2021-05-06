@@ -3,10 +3,6 @@ try:
 except:
     exit("speech_recognition Not Found.")
 try:
-    from pymongo import MongoClient
-except:
-    exit("pymongo Not Found.")
-try:
     import key
 except:
     exit("key Not Found.")
@@ -76,8 +72,14 @@ class Audio2Text(object):
             pass
 
         # Present Output
+         # Cleaning Threads
+        print(app.clean_thread_msg)
+        sleep(app.app_sleep_time)
+        for thread in threads:
+            thread.join()
+            
         # Min length
-        if len(self.__text) >= app.min_text_len:
+        if len(self.__text) <= app.min_text_len:
             print(app.min_text_len_msg, app.min_text_len)
 
         # Processing
@@ -98,12 +100,7 @@ class Audio2Text(object):
             print(_obj)
             db = Database()
             db._insert(_obj)
-
-        # Cleaning Threads
-        print(app.clean_thread_msg)
-        sleep(app.app_sleep_time)
-        for thread in threads:
-            thread.join()
+       
         # Active thread left
         print(app.active_thread_left_msg, threading.active_count())
         sleep(app.app_sleep_time)
