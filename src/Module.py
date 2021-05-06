@@ -1,16 +1,18 @@
 try:
     import requests
-    import json
-    from bs4 import BeautifulSoup
-    import app
-    from textblob import TextBlob
 except:
-    exit("Some Modules Missing!!")
+    exit("Requests Not Found.")
+import json
+try:
+    from bs4 import BeautifulSoup
+except:
+    exit("Beautiful Soup Not Found.")
+import app
+from textblob import TextBlob
 try:
     import key
 except:
-    exit("key Not Found.")
-
+    exit("key.py Not Found.")
 try:
     from pymongo import MongoClient
 except:
@@ -27,7 +29,7 @@ class API(object):
                    'long-text': ats_text, 'number': _number_of_lines, 'algorithm': _algoritm_number}
         # request
         try:
-            r = requests.get('http://automatictextsummarizer.herokuapp.com/summarize_page',
+            r = requests.get(key.ats_uri,
                              params=_params, headers={'accept': 'application/json'})
             if r.status_code == 200:
                 print("Connection success...")

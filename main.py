@@ -1,8 +1,5 @@
 # Importing Libs
 from src.Audio2Text import Audio2Text
-# Global text
-text = 'We have listened a lot Now: '
-
 
 # Driver Function
 if __name__ == '__main__':
