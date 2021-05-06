@@ -71,34 +71,39 @@ class Audio2Text(object):
         print(app.clean_thread_msg)
         sleep(app.app_sleep_time)
         for thread in threads:
+            print(app.active_thread_left_msg, threading.active_count())
             thread.join()
-            
+        if len(threads) == 0:
+            print("Threads Cleaned.")
+
         # Min length
         if len(self.__text) <= app.min_text_len:
             print(app.min_text_len_msg, app.min_text_len)
 
         # Processing
-        api = API()
-        ats_text = api._ats(self.__text)
-        print(app.ats_text, ats_text)
-
+        # Text
+        print(app.final_text_msg, self.__text)
         txt_sentiment = SentimentScore(self.__text)
         _polarity = txt_sentiment._score("Text")
+
+        # ATS
+        api = API()
+        sleep(app.app_sleep_time)
+        ats_text = api._ats(self.__text)
+        print(app.ats_text, ats_text)
         ats_txt_sentiment = SentimentScore(ats_text)
         _ats_polarity = ats_txt_sentiment._score("ATS Text")
 
+        sleep(app.app_sleep_time)
         to_push = input(app.db_push_msg)
         if to_push != "No" or to_push != "no":
-            sleep(app.app_sleep_time)
             _obj = {"text": self.__text, "_ats_text": ats_text,
                     "_polarity": _polarity, "_ats_polarity": _ats_polarity}
             print(_obj)
             db = Database()
+            sleep(app.app_sleep_time)
             db._insert(_obj)
-       
+
         # Active thread left
         print(app.active_thread_left_msg, threading.active_count())
-        sleep(app.app_sleep_time)
         print(threading.current_thread())
-        # returning text
-        print(app.final_text_msg, self.__text)

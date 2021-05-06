@@ -18,6 +18,8 @@ except:
 
 
 class API(object):
+    def __init__(self):
+        print("Trying to connect APIs...")
 
     def _ats(self, ats_text, _number_of_lines=4, _algoritm_number=1):
         # params Json
@@ -28,10 +30,13 @@ class API(object):
             r = requests.get('http://automatictextsummarizer.herokuapp.com/summarize_page',
                              params=_params, headers={'accept': 'application/json'})
             if r.status_code == 200:
+                print("Connection success...")
                 soup = BeautifulSoup(r.text, 'html.parser')
                 get_tags = soup.findAll('p')
                 # ATS Text
                 ats_text = get_tags[1].text
+            else:
+                print("Connection failed...")
         except:
             print(app._slow_internet_err)
         return ats_text
