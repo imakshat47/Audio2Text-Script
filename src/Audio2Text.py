@@ -10,69 +10,103 @@ try:
     import key
 except:
     exit("key Not Found.")
+
 import threading
+import app
 from time import sleep
+from src.Module import API, SentimentScore, Database
 
 
 class Audio2Text(object):
     def __init__(self):
-        print("Devices => ", sr.Microphone.list_microphone_names())
+        print("Setting...")
+        print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
+        print("Available Devices => ", sr.Microphone.list_microphone_names())
         print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
         self.__r = sr.Recognizer()
         self.__text = ' '
-        __client = MongoClient(key._mongo_uri)
-        __coll = __client[key._db_name]
-        self.__db = __coll[key._db_document]
 
     def __audio2text(self, audio):
         try:
-            print("Listening...")
-            sleep(5)
+            print("Got it! Now to recognize it...")
             # lannguage tag n  show_all=True
             _text = self.__r.recognize_google(audio)
-            # recognize_ibm(self, audio_data, username, password, language="en-US", show_all=False)
-            # _text = self.__r.recognize_ibm(audio, username, password)            
+            # IBM_USERNAME = "INSERT IBM SPEECH TO TEXT USERNAME HERE"  # IBM Speech to Text usernames are strings of the form XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+            # IBM_PASSWORD = "INSERT IBM SPEECH TO TEXT PASSWORD HERE"  # IBM Speech to Text passwords are mixed-case alphanumeric strings
+            # _text = self.__r.recognize_ibm(audio, username=IBM_USERNAME, password=IBM_PASSWORD)
             print("Text => ", _text)
-            self.__text += " "
-            self.__text += _text
-        except Exception as e:
-            print(e)
-            print("Something went Wrong. But Still Listening...")
+            self.__text += " " + _text
+        except sr.UnknownValueError:
+            print("Oops! Didn't catch that...")
+        except sr.RequestError:
+            print("Uh oh! Couldn't request results ", app._slow_internet_err)
+        sleep(0.5)  # sleep for a little bit
         return None
-
-    def __add2db(self, _obj):
-        self.__db.insert_one(_obj)
 
     def _listen(self):
         try:
             threads = []
-            print("Started Listening...")
+            m = sr.Microphone()
+            print(app.silence_msg)
+            with m as source:
+                self.__r.adjust_for_ambient_noise(source)
             while True:
+                print(app.say_something_msg)
                 # Listen Microphone
-                with sr.Microphone() as source:
-                    # 2 * 60s = 120 // 2 mins
-                    audio = self.__r.record(source, duration=60)
+                with m as source:
+                    audio = self.__r.record(
+                        source, duration=app.listening_duration)
+                # audio = self.__r.listen(source)
 
+                # makes threads
                 thread = threading.Thread(
-                    None, target=self.__audio2text, args=(audio,))
+                    None, target=self.__audio2text, args=(audio,), daemon=True)
                 thread.start()
                 threads.append(thread)
+
+                # Check max threads
+                if len(threads) == app.max_threading_allowed:
+                    print(app.pause_thread_cleaning_in_btwn_msg)
+                    for thread in threads:
+                        thread.join()
+                    print(app.resume_thread_cleaning_in_btwn_msg)
+                    threads = []
 
         except KeyboardInterrupt:
             pass
 
-        if len(self.__text) >= 125:
-            print("Saving to db...")
-            sleep(5)
-            _obj = {"text": self.__text}
-            self.__add2db(_obj)
-        else:
-            print("Can't Save to db. Text length less than 125.")
-        print("Cleaning threads...")
-        sleep(5)
+        # Present Output
+        # Min length
+        if len(self.__text) >= app.min_text_len:
+            print(app.min_text_len_msg, app.min_text_len)
+
+        # Processing
+        api = API()
+        ats_text = api._ats(self.__text)
+        print(app.ats_text, ats_text)
+
+        txt_sentiment = SentimentScore(self.__text)
+        _polarity = txt_sentiment._score("Text")
+        ats_txt_sentiment = SentimentScore(ats_text)
+        _ats_polarity = ats_txt_sentiment._score("ATS Text")
+
+        to_push = input(app.db_push_msg)
+        if to_push != "No" or to_push != "no":
+            sleep(app.app_sleep_time)
+            _obj = {"text": self.__text, "_ats_text": ats_text,
+                    "_polarity": _polarity, "_ats_polarity": _ats_polarity}
+            print(_obj)
+            db = Database()
+            db._insert(_obj)
+
+        # Cleaning Threads
+        print(app.clean_thread_msg)
+        sleep(app.app_sleep_time)
         for thread in threads:
-            print("Active Thread Left => ", threading.active_count())
             thread.join()
-        sleep(5)
+        # Active thread left
+        print(app.active_thread_left_msg, threading.active_count())
+        sleep(app.app_sleep_time)
         print(threading.current_thread())
-        return self.__text
+        # returning text
+        print(app.final_text_msg, self.__text)

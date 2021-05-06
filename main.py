@@ -7,10 +7,11 @@ text = 'We have listened a lot Now: '
 # Driver Function
 if __name__ == '__main__':
     # listen via Microphone
-    a2t = Audio2Text()
-    text = a2t._listen()
-    # output
     print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
-    print("Final Text Collected is: ", text)
+    print("Welcome to Tenet System")
+    print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
+    a2t = Audio2Text()
+    a2t._listen()    
     print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
     print("App Closed.")
+    print("//-/-/-/-/-/-/-/-/-/-/-/-/-//")
