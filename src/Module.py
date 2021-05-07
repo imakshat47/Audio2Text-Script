@@ -39,6 +39,8 @@ class API(object):
                 get_tags = soup.findAll('p')
                 # ATS Text
                 ats_text = get_tags[1].text            
+            else:
+                print("ATS ", app.status_err)
         except:
             print(app._slow_internet_err)
             print("ATS ", app.status_err)
@@ -59,7 +61,7 @@ class API(object):
 class SentimentScore(object):
     def __init__(self, text):
         self.__senti = TextBlob(text).sentiment
-        print("Sentiment Score ", app.status_err)
+        print("Sentiment Score ", app.status_succ)
 
     def _score(self, _of):
         _polairty = self.__senti.polarity
@@ -85,9 +87,13 @@ class Database(object):
     def _insert(self, _obj):
         if _key == True:
             self.__db.insert_one(_obj)
+            print("Data Insertion ", app.status_succ)
+        else:
             print("Data Insertion ", app.status_err)
 
     def __del__(self):
         if _key == True:
             self.__client.close
+            print("Database Connection Closing ", app.status_succ)
+        else:
             print("Database Connection Closing ", app.status_err)
