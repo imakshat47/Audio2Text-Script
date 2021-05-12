@@ -62,7 +62,7 @@ class SentimentScore(object):
     def __init__(self, text):
         __txtBlob = TextBlob(text)        
         self.__senti = TextBlob(str(__txtBlob.correct())).sentiment
-        print("Sentiment Score", app.status_succ)
+        # print("Sentiment Score", app.status_succ)
 
     def _score(self, _of):
         _subjectivity = round(self.__senti.subjectivity, app.polarity_ndigit)
@@ -85,7 +85,7 @@ class SentimentScore(object):
                 _sentimeter_txt = app.ordinals4
         else:
             _sentimeter_txt = app.ordinals0
-        print("Sentimeter: ",_sentimeter_txt)
+        print("Sentimeter: ",_sentimeter_txt, " ( " , _score ," )")
 
 
 class Database(object):

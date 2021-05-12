@@ -1,7 +1,7 @@
 # // APP Variables
 
 # 60s * x = x min
-listening_duration = 60
+listening_duration = 90
 
 # max_threading_allowed = 20
 

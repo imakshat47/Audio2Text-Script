@@ -22,7 +22,7 @@ class Audio2Text(object):
         self._sleep_time = 0.5
 
     def __audio2text(self, audio):        
-        print("System Running...")
+        print("Listening...")     
         sleep(app.app_sleep_time)
         try:
             print("Got it! Now to recognize it...")
@@ -42,7 +42,8 @@ class Audio2Text(object):
         except sr.UnknownValueError:
             print("Oops! Didn't catch that...")
         except:
-            print("Uh oh! Couldn't request results ", app._slow_internet_err)        
+            print("Uh oh! Couldn't request results ", app._slow_internet_err)   
+        print("System Running...")
         return None
 
     def _listen(self):
@@ -52,8 +53,8 @@ class Audio2Text(object):
             print(app.silence_msg)
             with m as source:
                 self.__r.adjust_for_ambient_noise(source)
+            print(app.say_something_msg)
             while True:
-                print(app.say_something_msg)
                 # Listen Microphone
                 with m as source:
                     audio = self.__r.record(
