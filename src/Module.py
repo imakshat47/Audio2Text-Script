@@ -96,4 +96,4 @@ class Database(object):
             self.__client.close
             print("Database Connection Closing ", app.status_succ)
         else:
-            print("Database Connection Closing ", app.status_err)
+            print("Database Connection Closing ", app.status_err)   
