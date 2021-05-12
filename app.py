@@ -5,6 +5,14 @@ listening_duration = 60
 
 # max_threading_allowed = 20
 
+polarity_ndigit = 5
+
+ordinals0 = "Neutral"
+ordinals1 = "Good"
+ordinals2 = "Very Good"
+ordinals3 = "Bad"
+ordinals4 = "Very Bad"
+
 app_sleep_time = 2
 
 min_text_len = 125
