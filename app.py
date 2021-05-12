@@ -5,7 +5,7 @@ listening_duration = 60
 
 # max_threading_allowed = 20
 
-polarity_ndigit = 5
+polarity_ndigit = 3
 
 ordinals0 = "Neutral"
 ordinals1 = "Good"

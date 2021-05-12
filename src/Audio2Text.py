@@ -32,12 +32,13 @@ class Audio2Text(object):
             # IBM_USERNAME = "INSERT IBM SPEECH TO TEXT USERNAME HERE"  # IBM Speech to Text usernames are strings of the form XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
             # IBM_PASSWORD = "INSERT IBM SPEECH TO TEXT PASSWORD HERE"  # IBM Speech to Text passwords are mixed-case alphanumeric strings
             # _text = self.__r.recognize_ibm(audio, username=IBM_USERNAME, password=IBM_PASSWORD)
-            print("Text: ", _text)
+            # print("Text: ", _text)
             self.__text += " " + _text            
             txt_sentiment = SentimentScore(self.__text)                                    
-            self.__polarity = (self.__polarity  + txt_sentiment._score("Intermediate Text")) / 2 
-            print("Score: ", self.__polarity)
-            print("Sentimeter: ", txt_sentiment._ordinals(self.__polarity))
+            _polarity = txt_sentiment._score("Intermediate Text")
+            self.__polarity = (self.__polarity  + _polarity) / 2 
+            # print("Score: ", self.__polarity)
+            txt_sentiment._ordinals(self.__polarity)
         except sr.UnknownValueError:
             print("Oops! Didn't catch that...")
         except:
@@ -73,14 +74,15 @@ class Audio2Text(object):
         print(app.clean_thread_msg)                    
         while  len(threads) != 0:
             for thread in threads:
-                print("Thread: ", thread)
+                # print("Thread: ", thread)
                 # print(app.active_thread_left_msg, threading.active_count())
                 thread.join()
+                print("Cleaning...")
                 threads.pop(0)
                 # print(len(threads))
                 # print(threads)
                 sleep(self._sleep_time)  # sleep for a little bit   
-        print(app.active_thread_left_msg, threading.active_count())
+        # print(app.active_thread_left_msg, threading.active_count())
         sleep(app.app_sleep_time)
         if len(threads) == 0:
             sleep(app.app_sleep_time)
@@ -124,7 +126,7 @@ class Audio2Text(object):
             sleep(app.app_sleep_time)
             db._insert(_obj)
         sleep(self._sleep_time)  # sleep for a little bit 
-        print("Sentimeter: ", txt_sentiment._ordinals(_polarity))
+        txt_sentiment._ordinals(_polarity)
         sleep(self._sleep_time)  # sleep for a little bit 
         # Active thread left
         print(app.active_thread_left_msg, threading.active_count())
