@@ -65,21 +65,21 @@ class SentimentScore(object):
         # print("Sentiment Score", app.status_succ)
 
     def _score(self, _of):
-        _subjectivity = round(self.__senti.subjectivity, app.polarity_ndigit)
+        # _subjectivity = round(self.__senti.subjectivity, app.polarity_ndigit)
         _polairty = round(self.__senti.polarity, app.polarity_ndigit)
         # print(_of, app.sentiment_score_msg, _polairty)
         # print(_of,app.subjectivity_score_msg, _subjectivity)
         # _subjectivity = 1.00001 - _subjectivity
-        return round((_polairty * _subjectivity * 10), app.polarity_ndigit)
+        return _polairty
     
     def _ordinals(self, _score):        
         if _score > 0:
-            if _score < 0.5:
+            if _score < 0.35:
                 _sentimeter_txt = app.ordinals1            
             else:
                 _sentimeter_txt = app.ordinals2
         elif _score < 0:
-            if _score > -0.5:
+            if _score > -0.35:
                 _sentimeter_txt = app.ordinals3
             else:
                 _sentimeter_txt = app.ordinals4
