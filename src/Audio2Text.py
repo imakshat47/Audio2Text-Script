@@ -33,7 +33,7 @@ class Audio2Text(object):
             # IBM_PASSWORD = "INSERT IBM SPEECH TO TEXT PASSWORD HERE"  # IBM Speech to Text passwords are mixed-case alphanumeric strings
             # _text = self.__r.recognize_ibm(audio, username=IBM_USERNAME, password=IBM_PASSWORD)
             # print("Text: ", _text)
-            self.__text += " " + _text            
+            self.__text += " " + _text
             txt_sentiment = SentimentScore(self.__text)                                    
             _polarity = txt_sentiment._score("Intermediate Text")
             self.__polarity = (self.__polarity  + _polarity) / 2 
